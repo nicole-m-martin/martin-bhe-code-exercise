@@ -16,7 +16,19 @@ class Sieve {
   }
 
   NthPrime(n) {
-    throw new Error("unimplemented");
+    let count = 0; // Track primes with loop (0 index)
+    let currentNumber = 2; // Start from 2 (first prime)
+
+    while (count <= n) {
+      // Keep looping until finding nth prime
+      if (this.isPrime(currentNumber)) {
+        if (count === n) {
+          return currentNumber; // Found the nth prime!!!
+        }
+        count++; // count this prime and if nth prime not found keep looping to next prime
+      }
+      currentNumber++; // if nth prime not found move to next number to check
+    }
   }
 }
 
