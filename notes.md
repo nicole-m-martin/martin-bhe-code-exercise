@@ -48,7 +48,7 @@ node sieve.js
 
 Challenge goal: Retrieve the Nth prime number using 0-based indexing where the 0th prime number is 2
 
-Strategy:
+**Strategy:**
 
 - 0-based index: `arrayIndex[0, 1, 2, 3, 4, 5]` = `primeArray[2, 3, 5, 7, 11, 13]`
 - Use counter to track the prime numbers and find nth Prime number
@@ -83,6 +83,42 @@ Ran all test suites.
   - expect(sieve.NthPrime(1000000)).toBe(15485867);
   - expect(sieve.Nthprime(10000000)).toBe(179424691);
 
-Current `isPrime()` checks every number from 2 to number -1, so the larger checks are creating huge amount of iterations per check in the loops. Next steps, need to optimize perfomance for large numbers to pass remaining tests.
+Current `isPrime()` checks every number from 2 to number -1, so the larger checks are creating huge amount of iterations per check in the loops. Next steps, need to optimize performance for large numbers to pass remaining tests.
 
-### 4: More research, how to find Large prime numbers
+### 4: More research, how to find Large prime numbers and optimization attempts
+
+- Resources:
+
+  - [Youtube-Determining if large number is prime](https://www.youtube.com/watch?v=c7nnAktNlh4)
+  - [Math.sqrt()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sqrt)
+
+- Learned that you can check the square root of the number to see if they divide evenly, this should reduce the number of checks in the loops, and hopefully not time out the test.
+
+**First Attempt** - add Square Root check (`Math.sqrt()`) to `isPrime()` function.
+
+```
+for (let i = 2; i < Math.sqrt(number); i++)
+
+```
+
+**Result**:
+Failed test - `expect(sieve.NthPrime(19)).toBe(71);` returned 53 instead of 71.
+
+- Why am I getting 53 and not 71?
+- Added console logs of numbers between 53 and 71 to find bug, found `sieve.isPrime(49)` was returning `true` - incorrect!
+- Realized 7 x 7 = 49, and `Math.sqrt(49)` = 7
+- Loop condition `i < Math.sqrt(number)` stops at `i=6`. Checking only up to 6, not 7.
+
+**Next Attempt**
+
+- Updated `i <= Math.sqrt(number)` to include all square root checks.
+- Added new edge case to remove extra checks: early return for even numbers: `if (number % 2 ===0) return false`
+- Updated loop to start at 3
+- Changed loop increment from `i++` to `i +=2` to only check for odds
+- This should cut the number of checks down, but:
+
+**Result**:
+
+- Large tests still times out
+  - expect(sieve.NthPrime(1000000)).toBe(15485867);
+  - expect(sieve.Nthprime(10000000)).toBe(17942469);

@@ -4,9 +4,11 @@ class Sieve {
     if (number < 2) return false;
     // and 2 is only even prime number
     if (number === 2) return true;
+    // add new case to speed up checks, all even numbers (except 2) are not prime
+    if (number % 2 === 0) return false;
 
-    // Check each number from 2 up to but not including number itself
-    for (let i = 2; i < number; i++) {
+    // Check each number from 3 up to square root and skip even numbers
+    for (let i = 3; i <= Math.sqrt(number); i += 2) {
       if (number % i === 0) {
         // Use modulo to find remainder
         return false; // If remainder is 0, it divides evenly, number is not Prime
