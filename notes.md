@@ -122,3 +122,32 @@ Failed test - `expect(sieve.NthPrime(19)).toBe(71);` returned 53 instead of 71.
 - Large tests still times out
   - expect(sieve.NthPrime(1000000)).toBe(15485867);
   - expect(sieve.Nthprime(10000000)).toBe(17942469);
+
+### 5. More research and further optimazation with JavaScript Memoization/Cache
+
+- Resources:
+
+  - [Optimization of Loops in JavaScript](https://dev.to/kafeel_ahmad/optimization-of-loops-in-javascript-8p5)
+  - [JavaScript Memoization](https://www.geeksforgeeks.org/javascript/javascript-memoization/)
+  - [Class-Constructor MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
+
+- Used a cache/memoization to reuse primes already found, reducing redundant calls.
+- Only checking divisibility up to `Math.sqrt(number)` to speed up loops.
+- Large tests passing, slow about 30sec, but I have all tests passing now!
+
+```
+ PASS  Sieve/sieve.test.js (29.408 s)
+  Sieve
+    ✓ valid results (29283 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        29.441 s, estimated 34 s
+```
+
+### 6 Tradeoffs
+
+- With more time, I would like to keep exploring optimized sieves for very large nth primes.
+- Current implementation is not fully optimal for very large nth primes, Full sieve test could be faster.
+- Started slow, with modular thinking, and testing - but overall slower than a sieve batching many primes.

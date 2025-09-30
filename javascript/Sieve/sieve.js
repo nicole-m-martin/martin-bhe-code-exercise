@@ -1,36 +1,42 @@
 class Sieve {
+  constructor() {
+    this.cache = []; // Cache primes for faster checks
+  }
+
   isPrime(number) {
-    // Edge cases: from research we know 0 and 1 not prime numbers
     if (number < 2) return false;
-    // and 2 is only even prime number
     if (number === 2) return true;
-    // add new case to speed up checks, all even numbers (except 2) are not prime
     if (number % 2 === 0) return false;
 
-    // Check each number from 3 up to square root and skip even numbers
-    for (let i = 3; i <= Math.sqrt(number); i += 2) {
-      if (number % i === 0) {
-        // Use modulo to find remainder
-        return false; // If remainder is 0, it divides evenly, number is not Prime
+    const squareRoot = Math.sqrt(number);
+    for (let primeNumber of this.cache) {
+      if (primeNumber > squareRoot) break; // Stop check if more than square root of number
+      if (number % primeNumber === 0) {
+        return false;
       }
     }
-    return true; // Nothing divides it evenly - so number is Prime!!
+    return true;
   }
 
   NthPrime(n) {
-    let count = 0; // Track primes with loop (0 index)
-    let currentNumber = 2; // Start from 2 (first prime)
+    // Return nth prime if already in cache
+    if (this.cache[n] !== undefined) return this.cache[n];
+
+    let currentNumber =
+      // Start from next number after last cached prime, or 2 if cache is empty
+      this.cache.length > 0 ? this.cache[this.cache.length - 1] + 1 : 2;
+
+    let count = this.cache.length;
 
     while (count <= n) {
       // Keep looping until finding nth prime
       if (this.isPrime(currentNumber)) {
-        if (count === n) {
-          return currentNumber; // Found the nth prime!!!
-        }
-        count++; // count this prime and if nth prime not found keep looping to next prime
+        this.cache.push(currentNumber); // Add new prime to cache
+        count++;
       }
-      currentNumber++; // if nth prime not found move to next number to check
+      currentNumber++;
     }
+    return this.cache[n];
   }
 }
 
